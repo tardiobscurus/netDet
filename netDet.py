@@ -1,29 +1,37 @@
 import os
+import pyCrackNg
+from getpass import getpass
 # import subprocess
 
 # subprocess.run(["ls", "-l"])
 
-psswrd = "hc20030222"
-psswrd_input = input("Password: ")
+psswrd_input = getpass(prompt="[sudo] Password: ", stream=None)
 
-no_detected_untrusted_device = True
+no_detected_untrusted_device = False
 
-if psswrd_input == psswrd:
+if psswrd_input == "hc20030222":
     print("Getting information using airodump-ng...")
-
+    
     while True:
         inp_continue = input("If you continue, you will be temporarily disconnected from the network until you exit the program by entering \"q\". Are you sure to continue? [Y / N] > ")
         if inp_continue.upper() == "Y":
-            os.system("gnome-terminal --window -- sh -c \"echo " + psswrd + " | sudo -S \"airmon-ng\" && exit; bash\"")
+            os.system(f"gnome-terminal --window -- sh -c \"echo {psswrd_input} | sudo -S \"airmon-ng\" && exit; bash\"")
+            print("Finished finding information using airodump-ng")
 
-            file_inp = str(input("Enter in trsuted devices file location > "))
-            os.system("find " + file_inp)
+            while True:
+                file_inp = str(input("Enter in the file name of trusted devices > "))
+                result = os.popen("find -name " + file_inp).read()
+                if result == "":
+                    print("Couldn't find that...")
+                else:
+                    print("Found it!")
+                    break
             
             print("Received information!")
 
             print("Running through dignostics...")
             if not no_detected_untrusted_device:
-                print("\033[31mDetected an untrusted device in the WiFi, enter --- to see more detail.\033[39m")
+                print("\033[31mDetected an untrusted device in the WiFi, enter 'detection' to see more detail.\033[39m")
             else:
                 print("\033[32mNo detected untrusted devices found.\033[39m")
             break
@@ -41,7 +49,12 @@ if psswrd_input == psswrd:
             for i in f:
                 print(i)
 
+        elif usr_input == "detection":
+            print("In progress...")
+
         elif usr_input == "q":
+            # os.system(f"gnome-terminal --window -- sh -c \"echo {psswrd_input} | sudo -S \"service network-manager start\"")
+            os.system(f"echo {psswrd_input} | sudo -S \"service network-manager start\"")
             print("Thank you, come again!")
             break
 
