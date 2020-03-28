@@ -1,45 +1,66 @@
-import os
-import pyCrackNg
-from getpass import getpass
-# import subprocess
+import os # For all the terminal based commands
+import csv # To read the given devices connected to the network
 
-# subprocess.run(["ls", "-l"])
+detected_untrusted_device = False
 
-psswrd_input = getpass(prompt="[sudo] Password: ", stream=None)
+# This will check the terminal if it's in root
+if os.geteuid() == 0:
 
-no_detected_untrusted_device = False
+    # ----------------------------------------------------------------------
+    # Checking if aircrack is available
+    print("\033[32mChecking if 'aircrack-ng' is installed...\033[39m")
+    find_application = os.popen("dpkg -l | grep aircrack-ng").read()
+    if find_application == "":
+        print("\033[31mUnable to find the program\033[39m : installing it\n")
+        os.system("apt-get -y install aircrack-ng")
+    else:
+        print("Found the program!\n")
+    # ----------------------------------------------------------------------
 
-if psswrd_input == "hc20030222":
-    print("Getting information using airodump-ng...")
-    
+    print("Getting information using 'airodump-ng'...")
+
     while True:
-        inp_continue = input("If you continue, you will be temporarily disconnected from the network until you exit the program by entering \"q\". Are you sure to continue? [Y / N] > ")
-        if inp_continue.upper() == "Y":
-            os.system(f"gnome-terminal --window -- sh -c \"echo {psswrd_input} | sudo -S \"airmon-ng\" && exit; bash\"")
-            print("Finished finding information using airodump-ng")
+        usr_input = input("\nThe program make your device go offline until you exit out the program. Will you still like to continue? [y / n] > ")
 
-            while True:
-                file_inp = str(input("Enter in the file name of trusted devices > "))
-                result = os.popen("find -name " + file_inp).read()
-                if result == "":
-                    print("Couldn't find that...")
-                else:
-                    print("Found it!")
-                    break
-            
-            print("Received information!")
+        if usr_input.lower() == "y":
+            print("Might take 30 - 60 seconds...")
 
-            print("Running through dignostics...")
-            if not no_detected_untrusted_device:
-                print("\033[31mDetected an untrusted device in the WiFi, enter 'detection' to see more detail.\033[39m")
-            else:
-                print("\033[32mNo detected untrusted devices found.\033[39m")
+            # Plans for this section
+            # - We will open up a new terminal for sequencing airdump
+            # - Within this part, we will try and retrive info only in the devices STATION's bssid (if possible)
+            # - That info will be sent to a text file, when running again, if found that text file, it will overwrite it
+
+            print("Finished finding information using 'airodump-ng'\n")
             break
-        elif inp_continue.upper() == "N":
-            print("Exiting out of the program...")
+        elif usr_input.lower() == "n":
+            print("\nProceeding to exit the program...")
             exit()
         else:
-            print("Invalid input, try again...")
+            print("\nInvalid input")
+
+    # ----------------------------------------------------------------------
+
+    while True:
+        file_inp = str(input("Enter in the file name of trusted devices > "))
+        result = os.popen("find -name " + file_inp).read()
+        if result == "":
+            print("Couldn't find that...")
+        else:
+            print("Found the text file!\n")
+            break
+
+    # ----------------------------------------------------------------------
+
+    print("Running through dignostics...")
+    if not detected_untrusted_device:
+        print("\033[32mNo detected untrusted devices found.\033[39m\n")
+    else:
+        print("\033[31mDetected an untrusted device in the WiFi, enter 'detection' to see more detail.\033[39m\n")
+        # break
+
+    # ----------------------------------------------------------------------
+
+    # The main terminal emulation
 
     while True:
         usr_input = input("netDet> ")
@@ -52,22 +73,35 @@ if psswrd_input == "hc20030222":
         elif usr_input == "detection":
             print("In progress...")
 
-        elif usr_input == "q":
+        elif usr_input == "q" or usr_input == "exit":
             # os.system(f"gnome-terminal --window -- sh -c \"echo {psswrd_input} | sudo -S \"service network-manager start\"")
-            os.system(f"echo {psswrd_input} | sudo -S \"service network-manager start\"")
+            # os.system("service network-manager start && exit")
+
+            # In this we will
+            # - Stop the monitor mode in airmon-ng
+            # - Restart network-manager
+            # - Disclaim the viewer that you may need to reboot the system to go back to the network.
+            # - Lastly, of course, exit out the program
+            
             print("Thank you, come again!")
             break
 
-        elif usr_input == "--help":
+        elif usr_input == "help":
             print("""
 trusted     It will list all the trusted devices from text file
             you have entered.
 
-q           You will be automatically be exitted out of the 
-            program, and you will be coming back to the program.
+detection   Will compare the list you've given over 'aircrack-ng'
+            and will return the results wether or not it detected
+            an untrusted device. (Still in progress...)
+
+q / exit    Exit out the program.
             """)
 
         else:
-            print("Command undifined, enter --help for commands")
+            print("Command undifined, enter help for commands")
+
+        # ----------------------------------------------------------------------
+
 else:
-    print("No, you are not allowed, go away!")
+    print("You must be in root to run this script...")
