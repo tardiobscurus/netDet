@@ -9,13 +9,17 @@ if os.geteuid() == 0:
     # ----------------------------------------------------------------------
     # Checking if aircrack is available
     print("\033[32mChecking if 'aircrack-ng' is installed...\033[39m")
-    find_application = os.popen("dpkg -l | grep aircrack-ng").read()
-    if find_application == "":
+    find_aircrack = os.popen("dpkg -l | grep aircrack-ng").read()
+    if find_aircrack == "":
         print("\033[31mUnable to find the program\033[39m : installing it\n")
-        os.system("apt-get -y install aircrack-ng")
+        os.popen("apt-get -y install aircrack-ng")
     else:
-        print("Found the program!\n")
+        print("Aircrack-ng was found in your computer!\n")
+
     # ----------------------------------------------------------------------
+
+    print("Enter internet connection type (i, g; wlp2s0)")
+    internet = input(" > ")
 
     print("Getting information using 'airodump-ng'...")
 
@@ -23,12 +27,15 @@ if os.geteuid() == 0:
         usr_input = input("\nThe program make your device go offline until you exit out the program. Will you still like to continue? [y / n] > ")
 
         if usr_input.lower() == "y":
-            print("Might take 30 - 60 seconds...")
 
             # Plans for this section
             # - We will open up a new terminal for sequencing airdump
             # - Within this part, we will try and retrive info only in the devices STATION's bssid (if possible)
             # - That info will be sent to a text file, when running again, if found that text file, it will overwrite it
+
+            print("Disconnecting device & listing connected devices in network...")
+            print("It will take ~45 seconds...")
+            os.system(f"sh grab_devices.sh {internet}")
 
             print("Finished finding information using 'airodump-ng'\n")
             break
