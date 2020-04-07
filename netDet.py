@@ -70,7 +70,7 @@ if os.geteuid() == 0:
     # The main terminal emulation
 
     while True:
-        usr_input = input("netDet> ")
+        usr_input = input("netDet> ") trusted
 
         if usr_input == "trusted":
             f = open(file_inp, "r")
@@ -90,6 +90,10 @@ if os.geteuid() == 0:
             # - Disclaim the viewer that you may need to reboot the system to go back to the network.
             # - Lastly, of course, exit out the program
             
+            os.popen(f"airmon-ng stop {internet}mon")
+            print("Finished going back to the network")
+
+
             print("Thank you, come again!")
             break
 

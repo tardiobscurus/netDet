@@ -10,10 +10,8 @@
 # tail -n +6 airodump_info/first_detection/simpleDetect.-01.csv | cut -d ',' -f 1-1 >> text.txt 
 
 # 1. airmon-ng start $1
-# 2. timeout 45 airodump-ng -w airdump_info/first_detection/simpleDetect/.-01.csv $1mon
+# 2. timeout 10 airodump-ng -w airdump_info/first_detection/simpleDetect/. $1mon
 # 3. tail --line 2 airodump_info/first_detection/simpleDetect/.-01.csv | cut -d ',' -f 1-1 >> BSSID.txt
-# 4. 
+# 4. timeout 45 airodump-ng --bssid $BSSID -c $CHANNEL -w . $1mon
+# 5. 
 
-# BSSID=cat ~/testing_timeout/full_roster/text2.txt
-
-echo "My BSSID: $(cat ~/testing_timeout/full_roster/text2.txt)"
