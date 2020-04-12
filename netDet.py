@@ -1,7 +1,10 @@
 import os # For all the terminal based commands
+import subprocess
+import shlex
 import csv # To read the given devices connected to the network
 
-detected_untrusted_device = False
+os.popen("chmod +x repeat-search.sh")
+os.popen("rm -f airdump_info/result*")
 
 # This will check the terminal if it's in root
 if os.geteuid() == 0:
@@ -20,6 +23,10 @@ if os.geteuid() == 0:
 
     print("Enter internet connection type (i, g; wlp2s0)")
     internet = input(" > ")
+    print("Enter devices BSSID (i, g; B8:A3:86:4B:31:E2)")
+    bssid = input (" > ")
+
+    os.popen(f"airmon-ng start {internet}")
 
     print("Getting information using 'airodump-ng'...")
 
@@ -28,17 +35,13 @@ if os.geteuid() == 0:
 
         if usr_input.lower() == "y":
 
-            # Plans for this section
-            # - We will open up a new terminal for sequencing airdump
-            # - Within this part, we will try and retrive info only in the devices STATION's bssid (if possible)
-            # - That info will be sent to a text file, when running again, if found that text file, it will overwrite it
-
-            print("Disconnecting device & listing connected devices in network...")
-            print("It will take ~45 seconds...")
-            os.system(f"sh grab_devices.sh {internet}")
-
-            print("Finished finding information using 'airodump-ng'\n")
+            print("Disconnecting device & starting the loop...")
+            print("Good night!")
+            
+            # os.system(f"sh repeat_search.sh {internet} {bssid}")
+            subprocess.call(shlex.split(f"gnome-terminal -- bash repeat-search.sh {internet} {bssid}"))
             break
+
         elif usr_input.lower() == "n":
             print("\nProceeding to exit the program...")
             exit()
@@ -47,38 +50,20 @@ if os.geteuid() == 0:
 
     # ----------------------------------------------------------------------
 
-    while True:
-        file_inp = str(input("Enter in the file name of trusted devices > "))
-        result = os.popen("find -name " + file_inp).read()
-        if result == "":
-            print("Couldn't find that...")
-        else:
-            print("Found the text file!\n")
-            break
-
-    # ----------------------------------------------------------------------
-
-    print("Running through dignostics...")
-    if not detected_untrusted_device:
-        print("\033[32mNo detected untrusted devices found.\033[39m\n")
-    else:
-        print("\033[31mDetected an untrusted device in the WiFi, enter 'detection' to see more detail.\033[39m\n")
-        # break
-
-    # ----------------------------------------------------------------------
-
     # The main terminal emulation
 
     while True:
-        usr_input = input("netDet> ") trusted
+        usr_input = input("netDet> ")
 
         if usr_input == "trusted":
-            f = open(file_inp, "r")
+            f = open("airdump_info/_TRUSTED_DEVICES.txt", "r")
             for i in f:
                 print(i)
 
         elif usr_input == "detection":
-            print("In progress...")
+            f = open("airdump_info/_UNTRUSTED_DEVICES.txt", "r")
+            for i in f:
+                print(i)
 
         elif usr_input == "q" or usr_input == "exit":
             # os.system(f"gnome-terminal --window -- sh -c \"echo {psswrd_input} | sudo -S \"service network-manager start\"")
@@ -92,8 +77,7 @@ if os.geteuid() == 0:
             
             os.popen(f"airmon-ng stop {internet}mon")
             print("Finished going back to the network")
-
-
+            print("\nREAD: Keep in mind, you might need to reboot the system to go back to the internet...\n")
             print("Thank you, come again!")
             break
 
