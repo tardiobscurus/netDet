@@ -1,12 +1,10 @@
-<h1>**netDet**: Free from hackers over night</h1>
----
+# **netDet**: Free from hackers over night
 
-<h2> **About** </h2>
----
+
+## **About**
 With hackers roaming around the world, the most vulnarable within our network is at night when everynody is asleep. This program changes that. With a simple three input command, you will sleeping sondly knowing that you are protected.
 
-<h2> **Install** </h2>
----
+## **Install**
 **Disclaimer**: It is only available with Debian based Linux Distros. In the future, will be adding more Distros.
 
 Within your terminal, you will clone the repository in a specific directory.
