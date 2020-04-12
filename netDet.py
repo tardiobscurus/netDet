@@ -77,7 +77,7 @@ if os.geteuid() == 0:
             
             os.popen(f"airmon-ng stop {internet}mon")
             print("Finished going back to the network")
-            print("\nREAD: Keep in mind, you might need to reboot the system to go back to the internet...\n")
+            print("\nREAD: Keep in mind, you might need to reboot the system to go back to the internet...\nIf your device didn't go back to the wifi, simply enter in your terminal 'airmon-ng stop (internet type)mon'.\n")
             print("Thank you, come again!")
             break
 
