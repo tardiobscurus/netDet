@@ -1,7 +1,6 @@
 import os # For all the terminal based commands
 import subprocess
 import shlex
-import csv # To read the given devices connected to the network
 
 os.popen("chmod +x repeat-search.sh")
 os.popen("rm -f airdump_info/result*")
@@ -37,8 +36,7 @@ if os.geteuid() == 0:
 
             print("Disconnecting device & starting the loop...")
             print("Good night!")
-            
-            # os.system(f"sh repeat_search.sh {internet} {bssid}")
+
             subprocess.call(shlex.split(f"gnome-terminal -- bash repeat-search.sh {internet} {bssid}"))
             break
 
@@ -66,14 +64,6 @@ if os.geteuid() == 0:
                 print(i)
 
         elif usr_input == "q" or usr_input == "exit":
-            # os.system(f"gnome-terminal --window -- sh -c \"echo {psswrd_input} | sudo -S \"service network-manager start\"")
-            # os.system("service network-manager start && exit")
-
-            # In this we will
-            # - Stop the monitor mode in airmon-ng
-            # - Restart network-manager
-            # - Disclaim the viewer that you may need to reboot the system to go back to the network.
-            # - Lastly, of course, exit out the program
             
             os.popen(f"airmon-ng stop {internet}mon")
             print("Finished going back to the network")
