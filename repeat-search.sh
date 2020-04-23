@@ -2,7 +2,7 @@ INTERNET=$1
 BSSID=$2
 
 gnome-terminal -- airmon-ng start $INTERNET > /dev/null 2>&1
-
+> airdump_info/_DETECTED_DEVICES.txt
 rm -f airdump_info/result*
 
 while :
@@ -14,6 +14,7 @@ do
         printf "No detected devices...\n"
         printf "[ $(date +%T) ] Getting devices...\n"
         > airdump_info/_DETECTED_DEVICES.txt
+        > airdump_info/_UNTRUSTED_DEVICES.txt
     else
         grep -Fvxf airdump_info/_TRUSTED_DEVICES.txt airdump_info/_DETECTED_DEVICES.txt >> airdump_info/_UNTRUSTED_DEVICES.txt
         printf "Found untrusted device(s)!\n"
@@ -24,6 +25,7 @@ do
         aireplay-ng --deauth 0 -c "$(grep -Fvxf airdump_info/_TRUSTED_DEVICES.txt airdump_info/_DETECTED_DEVICES.txt)" -a $BSSID ${INTERNET}mon > /dev/null 2>&1
         rm -f airdump_info/result*
         > airdump_info/_DETECTED_DEVICES.txt
+        > airdump_info/_UNTRUSTED_DEVICES.txt
         break
     fi 
 

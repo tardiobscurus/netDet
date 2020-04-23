@@ -25,33 +25,37 @@ if os.geteuid() == 0:
     print("Enter devices BSSID (i, g; B8:A3:86:4B:31:E2)")
     bssid = input (" > ")
 
-    os.popen(f"airmon-ng start {internet}")
+    def start_detection():
+        os.popen(f"airmon-ng start {internet}")
 
-    print("Getting information using 'airodump-ng'...")
+        print("Getting information using 'airodump-ng'...")
 
-    while True:
-        usr_input = input("\nThe program make your device go offline until you exit out the program. Will you still like to continue? [y / n] > ")
+        while True:
+            usr_input = input("\nThe program make your device go offline until you exit out the program. Will you still like to continue? [y / n] > ")
 
-        if usr_input.lower() == "y":
+            if usr_input.lower() == "y":
 
-            print("Disconnecting device & starting the loop...")
-            print("Good night!")
+                print("Disconnecting device & starting the loop...")
+                
+                print("Good night!")
 
-            subprocess.call(shlex.split(f"gnome-terminal -- bash repeat-search.sh {internet} {bssid}"))
-            break
+                subprocess.call(shlex.split(f"gnome-terminal -- bash repeat-search.sh {internet} {bssid}"))
+                break
 
-        elif usr_input.lower() == "n":
-            print("\nProceeding to exit the program...")
-            exit()
-        else:
-            print("\nInvalid input")
+            elif usr_input.lower() == "n":
+                print("\nProceeding to exit the program...")
+                exit()
+            else:
+                print("\nInvalid input")
+    
+    start_detection()
 
     # ----------------------------------------------------------------------
 
     # The main terminal emulation
 
     while True:
-        usr_input = input("netDet> ")
+        usr_input = input("netDet> ").lower()
 
         if usr_input == "trusted":
             f = open("airdump_info/_TRUSTED_DEVICES.txt", "r")
@@ -62,12 +66,22 @@ if os.geteuid() == 0:
             f = open("airdump_info/_UNTRUSTED_DEVICES.txt", "r")
             for i in f:
                 print(i)
+        
+        elif usr_input == "start":
+            while True:
+                x = input("Are you sure? [ y / n ] > ").lower()
+
+                if x == "y":
+                    start_detection()
+                else:
+                    print("Alright")
+                    break
 
         elif usr_input == "q" or usr_input == "exit":
             
             os.popen(f"airmon-ng stop {internet}mon")
             print("Finished going back to the network")
-            print("\nREAD: Keep in mind, you might need to reboot the system to go back to the internet...\nIf your device didn't go back to the wifi, simply enter in your terminal 'airmon-ng stop (internet type)mon'.\n")
+            print("\nREAD: Keep in mind, you might need to reboot the system to go back to the internet...If your device didn't go back to the wifi, simply enter in your terminal 'airmon-ng stop (internet type)mon'.\n")
             print("Thank you, come again!")
             break
 
@@ -79,6 +93,8 @@ trusted     It will list all the trusted devices from text file
 detection   Will compare the list you've given over 'aircrack-ng'
             and will return the results wether or not it detected
             an untrusted device. (Still in progress...)
+
+start       Will begin the program again, sleep tight :)
 
 q / exit    Exit out the program.
             """)
