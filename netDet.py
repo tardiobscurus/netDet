@@ -39,7 +39,7 @@ if os.geteuid() == 0:
                 
                 print("Good night!")
 
-                subprocess.call(shlex.split(f"gnome-terminal -- bash repeat-search.sh {internet} {bssid}"))
+                os.system(f"gnome-terminal -- sh repeat-search.sh {internet} {bssid}")
                 break
 
             elif usr_input.lower() == "n":
