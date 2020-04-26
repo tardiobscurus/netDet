@@ -1,6 +1,6 @@
 # **netDet**: Free from hackers over night
 
-**Version 0.1** | **For [Supercomputing Challenge](https://supercomputingchallenge.org/19-20/about.php)**
+**Version 0.2** | **For [Supercomputing Challenge](https://supercomputingchallenge.org/19-20/about.php)**
 
 ---
 
