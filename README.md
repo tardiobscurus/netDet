@@ -5,17 +5,16 @@
 ---
 
 ## **About**
-With hackers roaming around the world, the most vulnarable within our network is at night when everynody is asleep. This program changes that. With a simple three input command, you will be sleeping sondly knowing that you are protected.
+With hackers roaming around the world, the most vulnerable within our network is at night when everybody is asleep. This program changes that. With a simple three input command, you will be sleeping soundly knowing that you are protected.
 
 ### **How it works**
-
-By using the WiFi security auditing tools suite, [Aircrack-ng](https://github.com/aircrack-ng/aircrack-ng). We will use three of its tools; `airmon-ng`, `airodump-ng`, and `aireplay-ng`. By doing a simple python and BASH script, we can identify, and deauthanticate an untrusted device, found within the WiFi.
+By using the WiFi security auditing tools suite, [Aircrack-ng](https://github.com/aircrack-ng/aircrack-ng). We will use three of its tools; `airmon-ng`, `airodump-ng`, and `aireplay-ng`. By doing a simple python and BASH script, we can identify, and deauthenticate an untrusted device, found within the WiFi.
 
 ### **Downsides and future fixes**
 
-However, the program cannot disconnect more than one device at a time, which will be added in a future version; the program also, cannot detect any device that are connected in a VPN. It is possible, which will come in a future release.
+However, the program cannot disconnect more than one device at a time, which will be added in a future version; the program also, cannot detect any device that is connected in a VPN. It is possible, which will come in a future release.
 
-This program is also not yet suitable for the people not knowing what is a BSSID or channel number they are in. We will try 
+This program is also not yet suitable for the people not knowing what is a BSSID or channel number they are in.
 
 ---
 
