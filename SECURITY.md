@@ -5,7 +5,7 @@ OS Types
 
 OS          | Version | Supported          |
 ----------- | ------- | ------------------ |
-Linux (Deb) | >18.00  | :green_check_mark:       |
+Linux (Deb) | >18.00  | :white_check_mark: |
 Windows     | N/A     | :x:                |
 MacOS       | N/A     | :x:                |
 
