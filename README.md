@@ -2,6 +2,8 @@
 
 **Version 0.2** | **For [Supercomputing Challenge](https://supercomputingchallenge.org/19-20/about.php)**
 
+<p style="font-size: 50px;">IT IS NOT WORKING AS OF NOW, IT WILL CRASH YOUR SYSTEM WHICH YOU WILL NEED TO THE TEDIOUS TASK OF RESETTING!</p>
+
 ---
 
 ## **About**
