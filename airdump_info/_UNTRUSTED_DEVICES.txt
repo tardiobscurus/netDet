@@ -1,1 +1,1 @@
-38:30:F9:73:0F:1E
+removing content inside file
